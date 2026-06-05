@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: su-ryun-hoe-guestbook
+    runtime: node
+    buildCommand: npm install --omit=dev
+    startCommand: node server.js
