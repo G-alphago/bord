@@ -1,0 +1,660 @@
+/* CSS Reset & Variables */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-dark: #0b0914;
+  --bubble-bg: rgba(255, 255, 255, 0.08);
+  --bubble-border: rgba(255, 255, 255, 0.18);
+  --glass-bg: rgba(15, 12, 30, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #ffffff;
+  --text-secondary: #b0aebf;
+  --accent-pink: #ff7675;
+  --accent-purple: #a29bfe;
+  --accent-blue: #00cec9;
+  --accent-gradient: linear-gradient(135deg, #ff7675, #fdcb6e, #00cec9, #a29bfe); /* 화사한 파스텔 네온 그라데이션 */
+  --font-title: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-dark);
+  background-image: url('background.png'); /* 사용자 이미지 배경 등록 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: hidden; /* 버블이 화면 밖으로 나갈 때 스크롤 방지 */
+  position: relative;
+  user-select: none; /* 드래그 선택 차단하여 앱 느낌 강화 */
+  -webkit-user-select: none;
+  
+  /* 대형 모니터 폰트 렌더링 화질 및 선명도 극대화 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 배경 이미지의 시각 방해를 억제하고 깊이감과 가독성을 주어 감싸는 가상 레이어 */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* 파스텔톤 일러스트의 가운데 밝은 분위기는 살리고 주변부 텍스트 시인성을 높이기 위해 radial 비네팅 처리 */
+  background: radial-gradient(circle, rgba(11, 9, 20, 0.15) 30%, rgba(11, 9, 20, 0.6) 100%);
+  /* 대형 모니터에서 저해상도 배경 이미지의 깨짐(모자이크)을 없애기 위해 블러 강도를 높임 */
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 몽환적인 백그라운드 오로라/광원 효과 */
+.bg-gradient-glow, .bg-gradient-glow-2 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  opacity: 0.55; /* 오로라 발광 강도를 높여 전체적으로 더 밝고 화사하게 조성 */
+  pointer-events: none;
+}
+
+.bg-gradient-glow {
+  top: -10%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(154, 110, 255, 0.8) 0%, rgba(110, 226, 255, 0) 70%);
+  animation: floatGlow 15s ease-in-out infinite alternate;
+}
+
+.bg-gradient-glow-2 {
+  bottom: -10%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(255, 110, 187, 0.8) 0%, rgba(154, 110, 255, 0) 70%);
+  animation: floatGlow2 20s ease-in-out infinite alternate;
+}
+
+@keyframes floatGlow {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(10vw, 5vh) scale(1.2); }
+}
+
+@keyframes floatGlow2 {
+  0% { transform: translate(0, 0) scale(1.1); }
+  100% { transform: translate(-8vw, -10vh) scale(0.9); }
+}
+
+/* 메인 앱 컨테이너 */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* 헤더 스타일 */
+.app-header {
+  padding: 50px 20px 10px; /* macOS hiddenInset 타이틀바 신호등 버튼 간섭 방지를 위해 padding-top 증가 */
+  text-align: center;
+  z-index: 2;
+  -webkit-app-region: drag; /* 창 드래그 이동 구역 지정 */
+}
+
+.logo {
+  font-family: var(--font-title);
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  -webkit-app-region: no-drag; /* 클릭 및 인터랙션 가능하도록 드래그 제외 */
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5)); /* 그라데이션 텍스트 가독성을 위한 크로스브라우징 그림자 필터 */
+}
+
+.logo span {
+  font-weight: 400;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #ffffff; /* 밝은 배경 위에서 선명히 보이도록 완전 백색 */
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.5;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.45); /* 이중 그림자로 시인성 보장 */
+}
+
+/* 버블 캔버스 컨테이너 */
+.bubble-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 100px; /* 입력 폼과의 충돌 방지 공간 */
+}
+
+/* 버블 감싸는 래퍼 (Y축 상승 애니메이션 적용) */
+.bubble-wrapper {
+  position: absolute;
+  bottom: -200px; /* 화면 아래 보이지 않는 곳에서 시작 */
+  left: var(--left);
+  width: var(--size);
+  height: var(--size);
+  animation-name: rise;
+  animation-duration: var(--speed);
+  animation-timing-function: linear;
+  animation-delay: var(--delay);
+  animation-fill-mode: forwards;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+/* 버블 실제 아이템 (X축 흔들림 및 둥근 형태 적용) */
+.bubble-item {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  /* 밝은 배경 위에서 네온 글자가 잘 보이도록 버블의 남색 명도를 낮추고 투명도 조율 */
+  background: rgba(14, 10, 32, 0.76);
+  border: 1.5px solid var(--bubble-glow-border, rgba(110, 226, 255, 0.45)); /* 동적 네온 컬러 테두리 */
+  backdrop-filter: blur(16px); /* 뒤편의 격자 무늬 일러스트를 강하게 뭉갬 */
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 
+    0 12px 35px rgba(0, 0, 0, 0.35),
+    inset 0 0 15px rgba(255, 255, 255, 0.1),
+    0 0 16px var(--bubble-glow-shadow, rgba(110, 226, 255, 0.3)); /* 동적 네온 광채 */
+  color: var(--text-primary);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+  animation-name: wobble;
+  animation-duration: var(--wobble-speed);
+  animation-timing-function: ease-in-out;
+  animation-delay: var(--wobble-delay);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+/* 마우스 호버 시 상승 일시 정지 및 확대 */
+.bubble-wrapper:hover {
+  animation-play-state: paused;
+  z-index: 10;
+}
+
+.bubble-wrapper:hover .bubble-item {
+  animation-play-state: paused;
+  transform: scale(1.1);
+  box-shadow: 
+    0 15px 40px rgba(154, 110, 255, 0.35),
+    inset 0 0 20px rgba(255, 255, 255, 0.4),
+    inset 0 -5px 20px rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 터질 때의 애니메이션 클래스 */
+.bubble-wrapper.pop {
+  pointer-events: none;
+  animation-play-state: paused;
+}
+
+.bubble-wrapper.pop .bubble-item {
+  animation-name: popEffect;
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.1, 0.8, 0.3, 1);
+  animation-fill-mode: forwards;
+}
+
+/* Y축 상승 애니메이션 키프레임 */
+@keyframes rise {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(calc(-100vh - 300px));
+  }
+}
+
+/* X축 흔들림 애니메이션 키프레임 */
+@keyframes wobble {
+  0% {
+    transform: translateX(calc(var(--wobble-range) * -1));
+  }
+  100% {
+    transform: translateX(var(--wobble-range));
+  }
+}
+
+
+@keyframes popEffect {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.5;
+    filter: blur(5px);
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+    filter: blur(10px);
+  }
+}
+
+/* 버블 내부 콘텐츠 */
+.bubble-name {
+  font-family: var(--font-title);
+  font-weight: 800; /* 두껍게 가독성 강화 */
+  font-size: 0.82rem;
+  margin-bottom: 6px;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  /* 글자 테두리와 깊이를 강화하여 뭉개짐 방지 */
+  text-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.8),
+    0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.bubble-message {
+  font-size: 0.92rem;
+  line-height: 1.4;
+  word-break: break-word;
+  max-width: 90%;
+  font-weight: 700; /* 조금 더 굵은 서체로 변경 */
+  /* 이중 그림자로 대형 화면에서도 번짐 없이 글자 분리 */
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 1), 
+    0 0 12px rgba(0, 0, 0, 0.9);
+}
+
+
+/* 하단 플로팅 입력 패널 */
+.input-panel {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 650px;
+  background: rgba(10, 8, 22, 0.84); /* 가독성을 위해 불투명도 및 대비 강도 소폭 상승 */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(25px); /* 배경 강하게 블러 */
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 30px;
+  padding: 12px 16px;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  z-index: 100;
+  transition: all 0.3s ease;
+  -webkit-app-region: no-drag; /* 인풋 폼 드래그 불가 영역 지정 */
+}
+
+.input-panel:focus-within {
+  border-color: rgba(154, 110, 255, 0.4);
+  box-shadow: 
+    0 20px 45px rgba(154, 110, 255, 0.15),
+    0 0 15px rgba(154, 110, 255, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.guestbook-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-group {
+  position: relative;
+}
+
+.name-group {
+  flex: 0 0 110px;
+}
+
+.message-group {
+  flex: 1;
+}
+
+.guestbook-form input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35); /* 내부 인풋 어둡게 처리해 글자 가독성 상승 */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 12px 18px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+  user-select: text; /* 입력 칸은 텍스트 선택 및 타이핑 가능하도록 허용 */
+  -webkit-user-select: text;
+}
+
+.guestbook-form input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.guestbook-form input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* 폼 전송 버튼 */
+.submit-btn {
+  background: var(--accent-gradient);
+  border: none;
+  border-radius: 20px;
+  padding: 12px 24px;
+  color: #ffffff;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(255, 110, 187, 0.2);
+}
+
+.submit-btn i {
+  font-size: 0.85rem;
+  transition: transform 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(154, 110, 255, 0.4);
+}
+
+.submit-btn:hover i {
+  transform: translateX(4px) translateY(-2px) scale(1.1);
+}
+
+.submit-btn:active {
+  transform: translateY(1px);
+}
+
+/* 스크린 리더용 숨김 스타일 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 우측 하단 플로팅 삭제 토글 버튼 (압정 모양) */
+.delete-mode-btn {
+  position: absolute;
+  bottom: 25px;
+  right: 5%;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(20, 16, 40, 0.7);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  z-index: 101;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-app-region: no-drag;
+}
+
+.delete-mode-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+  color: #ff7675;
+  border-color: rgba(255, 118, 117, 0.45);
+  box-shadow: 0 12px 30px rgba(255, 118, 117, 0.3);
+}
+
+.delete-mode-btn:active {
+  transform: translateY(1px);
+}
+
+/* 삭제 모드 활성화 시 상태 */
+.delete-mode-btn.active {
+  background: rgba(255, 118, 117, 0.28);
+  border-color: rgba(255, 118, 117, 0.85);
+  color: #ff7675;
+  box-shadow: 
+    0 0 20px rgba(255, 118, 117, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  animation: pulseGlow 1.5s infinite alternate;
+}
+
+/* 압정 버튼 전용 맥박 치는 광채 애니메이션 */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 118, 117, 0.3);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 0 0 24px rgba(255, 118, 117, 0.7);
+    transform: scale(1.05);
+  }
+}
+
+/* 삭제 모드가 활성화되었을 때, 전체 버블에 빨간 네온 테두리 적용 */
+body.delete-mode-active .bubble-item {
+  border-color: rgba(255, 118, 117, 0.65) !important;
+  box-shadow: 
+    0 12px 35px rgba(0, 0, 0, 0.35),
+    inset 0 0 15px rgba(255, 255, 255, 0.1),
+    0 0 16px rgba(255, 118, 117, 0.4) !important;
+  animation: wobble var(--wobble-speed) ease-in-out var(--wobble-delay) infinite alternate !important;
+}
+
+/* 모바일 기기 반응형 레이아웃 조정 */
+@media (max-width: 600px) {
+  .logo {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 0.85rem;
+    padding: 0 15px;
+  }
+
+  .guestbook-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .name-group {
+    flex: none;
+  }
+
+  .input-panel {
+    border-radius: 24px;
+    padding: 16px;
+    bottom: 15px;
+  }
+
+  .guestbook-form input {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .submit-btn {
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .delete-mode-btn {
+    bottom: 15px;
+    right: 15px;
+    width: 48px;
+    height: 48px;
+    font-size: 1.1rem;
+  }
+}
+
+/* ==========================================================================
+   실시간 로컬 공유 (Screen vs Mobile) & QR 패널 추가 스타일
+   ========================================================================== */
+
+/* 1. 뷰별 요소 노출 제어 */
+body.view-screen .mobile-only {
+  display: none !important;
+}
+
+body.view-mobile .screen-only {
+  display: none !important;
+}
+
+/* 2. 모바일 기기 접속 시 전송 폼 전용 화면 배치 */
+body.view-mobile {
+  overflow-y: auto;
+}
+
+body.view-mobile .app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  height: 100vh;
+}
+
+body.view-mobile .app-header {
+  padding: 0 0 20px 0;
+  -webkit-app-region: no-drag;
+}
+
+body.view-mobile .mobile-only-panel {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  transform: none;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: rgba(10, 8, 22, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 28px;
+  padding: 24px 20px;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  -webkit-app-region: no-drag;
+}
+
+body.view-mobile .guestbook-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+body.view-mobile .name-group {
+  flex: none;
+  width: 100%;
+}
+
+body.view-mobile .submit-btn {
+  padding: 14px;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+/* 3. 좌측 가장 하단 실시간 접속용 QR 및 주소 안내 */
+.qr-panel {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  z-index: 100;
+  -webkit-app-region: no-drag;
+  opacity: 0.85; /* 학생들이 멀리서 스캔할 수 있도록 평소에도 선명도 유지 */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.qr-panel:hover {
+  opacity: 1.0;
+  transform: translateY(-2px);
+}
+
+.qr-code-wrapper {
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 16px;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(162, 155, 254, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.qr-panel:hover .qr-code-wrapper {
+  box-shadow: 
+    0 12px 30px rgba(162, 155, 254, 0.4),
+    0 0 20px rgba(162, 155, 254, 0.3);
+}
+
+#qrCodeImg {
+  width: 125px;
+  height: 125px;
+  display: block;
+  border-radius: 8px;
+}
+
+.qr-panel .ip-address {
+  font-family: var(--font-title);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  background: rgba(10, 8, 22, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 12px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}

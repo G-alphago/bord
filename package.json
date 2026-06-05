@@ -1,0 +1,54 @@
+{
+  "name": "bubble-guestbook-app",
+  "version": "1.0.0",
+  "description": "몽글몽글 무한 루프 방명록 데스크톱 앱",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:mac": "electron-builder --mac --arm64 && chmod +x ./sign-mac.sh && ./sign-mac.sh",
+    "build:win": "electron-builder --win --x64",
+    "build:all": "npm run build:mac && npm run build:win"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "@electron/osx-sign": "^2.4.0",
+    "electron": "^29.3.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.vibecoding.bubbleguestbook",
+    "productName": "2026 중고등부 학생수련회 방명록",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "identity": "-",
+      "hardenedRuntime": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
+    },
+    "asar": true,
+    "files": [
+      "index.html",
+      "style.css",
+      "app.js",
+      "server.js",
+      "main.js",
+      "preload.js",
+      "background.png",
+      "guestbook_db.json"
+    ]
+  }
+}

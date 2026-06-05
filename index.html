@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 중고등부 학생수련회 - 방명록</title>
+  <!-- Google Fonts: Outfit 폰트와 Inter 폰트 적용 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome 아이콘 로드 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- 실시간 WebSocket 클라이언트 링크 -->
+  <script src="/socket.io/socket.io.js"></script>
+  
+  <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body class="view-screen"> <!-- 기본 뷰는 스크린, 모바일 접속 시 자바스크립트로 view-mobile 클래스 변경 -->
+  <!-- 몽환적인 배경용 백그라운드 그라데이션 레이어 -->
+  <div class="bg-gradient-glow"></div>
+  <div class="bg-gradient-glow-2"></div>
+
+  <!-- 메인 레이아웃 컨테이너 -->
+  <main class="app-container">
+    
+    <!-- 1. 전광판용 헤더 (A 대형 화면 노출) -->
+    <header class="app-header screen-only">
+      <h1 class="logo">2026 <span>중고등부 학생수련회</span></h1>
+      <p class="subtitle">이번 수련회를 기대하는 나의 마음을 적어주세요</p>
+    </header>
+
+    <!-- 2. 모바일 작성기 전용 헤더 (B 스마트폰 노출) -->
+    <header class="app-header mobile-only">
+      <h1 class="logo">2026 <span>중고등부 수련회</span></h1>
+      <p class="subtitle">수련회를 기대하는 설레는 나의 한마디를 적어주세요! 🎈</p>
+    </header>
+
+    <!-- 3. 실시간 버블 전광판 컨테이너 (스크린 모드 전용) -->
+    <section class="bubble-container screen-only" id="bubbleContainer" aria-label="방명록 버블 화면"></section>
+
+    <!-- 4. 실시간 동적 IP 주소 안내 패널 (스크린 모드 전용) -->
+    <div class="qr-panel screen-only" id="qrPanel">
+      <div class="qr-code-wrapper">
+        <img id="qrCodeImg" src="" alt="접속 QR코드" style="display: none;">
+      </div>
+      <span class="ip-address" id="ipAddress">접속 주소</span>
+    </div>
+
+    <!-- 5. 방명록 입력 패널 (모바일 모드 전용) -->
+    <div class="input-panel mobile-only-panel">
+      <form id="guestbookForm" class="guestbook-form" autocomplete="off">
+        <div class="input-group name-group">
+          <label for="visitorName" class="sr-only">이름</label>
+          <input type="text" id="visitorName" name="visitorName" placeholder="닉네임" required maxlength="10">
+        </div>
+        <div class="input-group message-group">
+          <label for="visitorMessage" class="sr-only">방명록 메시지</label>
+          <input type="text" id="visitorMessage" name="visitorMessage" placeholder="나의 기대와 다짐을 적어보세요..." required maxlength="40">
+        </div>
+        <button type="submit" class="submit-btn" aria-label="메시지 띄우기">
+          <span class="btn-text">띄우기</span>
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- 6. 우측 하단 플로팅 삭제 토글 버튼 (스크린 모드 전용, 관리자용) -->
+    <button id="deleteModeBtn" class="delete-mode-btn screen-only" aria-label="방명록 삭제 모드 토글" title="삭제 모드 토글 (압정)">
+      <i class="fa-solid fa-thumbtack"></i>
+    </button>
+  </main>
+ 
+  <script src="app.js?v=3"></script>
+</body>
+</html>
