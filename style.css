@@ -664,13 +664,14 @@ body.view-mobile .submit-btn {
 
 .qr-guidance {
   font-family: 'PyeongChangPeace-Bold', sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.95rem; /* 텍스트 크기를 키워 가독성 향상 */
   font-weight: 700;
   color: #ffffff;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.5px;
+  line-height: 1.4; /* 줄바꿈 시 간격 확보 */
   background: rgba(10, 8, 22, 0.82);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 6px 14px;
+  padding: 8px 16px; /* 패딩 소폭 확대 */
   border-radius: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
